@@ -1,10 +1,15 @@
-function f = RQMF(Data, Tau, rho,  W)
+function [f,rho] = RQMF(Data, Tau, rho, adaptive, W)
     if ~exist('W','var')
         W = diag(ones(1,size(Data, 2))); 
     end
     iter = 1;
     f.q_sequence = [];
     while true
+        if adaptive == 1
+            inter_l = 0.001; inter_r = 1; 
+            rho = search_lambda(Data, Tau, inter_l, inter_r, inter_l, rho, W);
+        end
+        
         [c, A, P] = Least_Fitting(Data, Tau, rho, W);
         d = size(Tau, 1);
         B = build_tensor(P, d);
@@ -34,10 +39,6 @@ end
 
 
 
-function theta = build_theta(Data, h, q)  
-    theta = diag(sqrt(exp(-sum((Data-q).^2,1)/h^2)));
-end
-
 
 function [c, A, P] = Least_Fitting(Data, Tau, rho, W)
 
@@ -52,27 +53,12 @@ end
 
 
 
-function sigma = find_sigma(x, Data, k)
-    s_distance = sum((Data-x).^2, 1);
-    [~,ind] = sort(s_distance,'ascend');
-    Neig = Data(:,ind(2:k+1)); 
-    sigma = max(sqrt(sum((Neig-x).^2,1)));
-end
-
-
 function Tau = qrs(Tau)
     d = size(Tau, 1);
     [Q,~] = qr([ones(size(Tau, 2),1),Tau']);
     Tau = Q(:,2:d+1)';
 end
 
-
-function [U,center] = principal(Data, h, q, d)
-    Theta = (build_theta(Data, h, q)).^2;
-    center = sum(Data*Theta, 2)/sum(diag(Theta));
-    [V,~,~] = svd((Data-center)*(Theta.^2)*(Data-center)');
-    U = V(:,1:d);
-end
 
 
 function B = build_tensor(para, d)
