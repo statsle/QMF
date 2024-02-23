@@ -14,7 +14,7 @@ The soft kernel version of RQMF fits the data in the local region by assigning d
 
 The fixed lambda version of RQMF can be implemented by setting adaptive=0, while the adaptive version of RQMF can be accomplished by setting adaptive=1, where lambda is tuned in the algorithm to ensure that s'(lambda) is a constant.
 
-The function returns a list as [f, ρ], where f is a structured variable with f.A, f.B, and f.C as the corresponding parameters in $f(\tau)$, and ρ is the regularization parameter. If we set adaptive=1, ρ is the final tuned parameter. If adaptive=0, then ρ is the original input.
+The function returns a list as [f, ρ], where f is a structured variable with f.A, f.B, and f.c as the corresponding parameters in $f(\tau)$, and ρ is the regularization parameter. If we set adaptive=1, ρ is the final tuned parameter. If adaptive=0, then ρ is the original input.
 
 
 
