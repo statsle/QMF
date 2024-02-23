@@ -13,7 +13,7 @@ plot(p(1,:),p(2,:),'>','markersize',8,'MarkerFaceColor','r');
 hold on
 
 %%initalize RQMF
-[~, Data_p, ~, ~] = initial_Tau(p, d, data, k, n);  
+[Tau_p, Data_p, ~, ~] = initial_Tau(p, d, data, k, n);  
 
 %%fitting with RQMF
 [f,~] = RQMF(Data_p,Tau_p,rho,0);
